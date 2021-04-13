@@ -38,8 +38,15 @@ As a Group choose your ALU operations and then design your ALU.
     Complete the following table for the ALU operations in your processor:
     | ALU Control Bits| Function  |
     |:---------------:|:----------:
-    |                 |           |
-    |                 |           |
+    |        000      |      addfi   |
+    |        001      |       add    |
+    |        010      |       sub    |
+    |        011      |       mul    |
+    |        100      |       div    |
+    |        101      |       mod    |
+    |        110      |       and    |
+    |        111      |       or     |
+
 
     Fig 1. ALU Control Bits and Associated Function
     *********************************************************************
