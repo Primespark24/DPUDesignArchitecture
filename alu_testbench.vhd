@@ -36,6 +36,9 @@ begin
         sim_alucontrol <= "000";
         sim_a <= to_float(4.5);
         sim_b <= to_float(3.2);
+        wait for 10ns;
+        -- Repeat lines 36-39 multiple times w/ different values and examine signal trace. 
+        assert sim_result == "actual 32-bit repr of number" report "This isn' Working";
     end process;
 
 end alu_testbench;
