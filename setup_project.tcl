@@ -21,7 +21,7 @@ set projectName "FP2"
 
 # Set to top level entity name - entity to be used by the board or set to "" if no top level board yet
 # note that vivado will automatically select a "top level module" for  you if you use "" here.
-set topLevelModuleName "computer_top" 
+set topLevelModuleName "" 
 
 # Set this to the top level entity name in your simulation testbench vhdl file or set to "" if no testbench
 set topLevelTestbenchModuleName "alu_testbench"
@@ -30,7 +30,7 @@ set topLevelTestbenchModuleName "alu_testbench"
 set simulationTestbench "./alu_testbench.vhd"
 
 # flag to generate bitstream. Set to true if you want to program the board
-set generateBitStream "true"
+set generateBitStream "false"
 
 # Set this to the FPGA part name - (it is already set to the BASYS 3 FPGA part )
 set fpgaPart "xc7a35tcpg236-1"
