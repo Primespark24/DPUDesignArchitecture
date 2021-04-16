@@ -2,7 +2,8 @@
 -- Arithmetic/Logic unit with add/sub, AND, OR, set less than
 ---------------------------------------------------------------
 library IEEE; 
- -- these libraries give us basic float Arithmeticuse IEEE.STD_LOGIC_1164.all; 
+ -- these libraries give us basic float Arithmetic
+use IEEE.STD_LOGIC_1164.all; 
 use IEEE.STD_LOGIC_UNSIGNED.all;
 use IEEE.NUMERIC_STD.all;
 use IEEE.MATH_real.all;
