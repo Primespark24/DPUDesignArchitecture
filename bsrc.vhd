@@ -7,6 +7,13 @@ use IEEE.NUMERIC_STD.all;
 -- from the instr (immidiate memory) or from a register 
 
 entitiy bsrc is 
-port (instr_type: std_logic_vector(1 downto 0)
+port (instr_type: in std_logic_vector(1 downto 0);
+    regB: in std_logic_vector(31 downto 0);
+    immB: in std_logic_vector(31 downto 0);
+    toB: out std_logic_vector(31 downto 0);  
+);
+end;
+
+architecture behave of bsrc is 
+
     
-)
