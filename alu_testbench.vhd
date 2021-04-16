@@ -12,30 +12,28 @@ entity alu_testbench is
 end;
 
 architecture alu_testbench of alu_testbench is 
-    
-    component ALU is
+    component alu is
         port(a, b: in STD_LOGIC_VECTOR(31 downto 0);
             alucontrol: in STD_LOGIC_VECTOR(2 downto 0);
             result: out STD_LOGIC_VECTOR(31 downto 0)
         );
     end component;
-
     signal sim_a, sim_b: STD_LOGIC_VECTOR(31 downto 0);
     signal sim_alucontrol: STD_LOGIC_VECTOR(2 downto 0);
     signal sim_result: STD_LOGIC_VECTOR(31 downto 0);
 begin 
     testproc: process begin
+        wait for 10ns;
         sim_alucontrol <= "000";
         sim_a <= std_logic_vector(to_float(4.5));
         sim_b <= std_logic_vector(to_float(3.2));
+        wait for 10ns;
     end process;
 
-sim_alu: ALU port map(
+sim_alu: alu port map(
         a => sim_a, 
         b => sim_b, 
         alucontrol => sim_alucontrol,
         result => sim_result
     );
-
-
 end alu_testbench;
