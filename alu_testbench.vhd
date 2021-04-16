@@ -26,7 +26,6 @@ architecture alu_testbench of alu_testbench is
 begin 
     testproc: process begin
         sim_alucontrol <= "000";
-<<<<<<< HEAD
         sim_a <= std_logic_vector(to_float(4.5));
         sim_b <= std_logic_vector(to_float(3.2));
     end process;
@@ -40,13 +39,3 @@ sim_alu: ALU port map(
 
 
 end alu_testbench;
-=======
-        sim_a <= to_float(4.5);
-        sim_b <= to_float(3.2);
-        wait for 10ns;
-        -- Repeat lines 36-39 multiple times w/ different values and examine signal trace. 
-        assert sim_result == "actual 32-bit repr of number" report "This isn' Working";
-    end process;
-
-end alu_testbench;
->>>>>>> 9ac674362de0d93f198f79d7f5f3b7728b5c9bfd
