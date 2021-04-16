@@ -53,7 +53,7 @@ As a Group choose your ALU operations and then design your ALU.
 
 * Draw a neat, accurate, detailed hardware diagram of your ALU. I recommend doing this with an online Electronics CAD program or LTSpice. There are several free schematic tools available online, please create a professional looking hardware diagram for your ALU
 
-    ![ALU Diagram](alu_diagram.jpg)
+![ALU Diagram](IMG/fp2_alu_diagram.png)
 
     Fig 2: Diagram of our ALU
 
