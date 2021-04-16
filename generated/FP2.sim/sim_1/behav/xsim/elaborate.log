@@ -1,0 +1,5 @@
+Vivado Simulator 2019.1
+Copyright 1986-1999, 2001-2019 Xilinx, Inc. All Rights Reserved.
+Running: C:/Xilinx/Vivado/2019.1/bin/unwrapped/win64.o/xelab.exe -wto 1a37538abd774cf99988fe2eb0736534 --incr --debug typical --relax --mt 2 -L secureip --snapshot alu_testbench_behav xil_defaultlib.alu_testbench -log elaborate.log 
+Using 2 slave threads.
+ERROR: [XSIM 43-3225] Cannot find design unit xil_defaultlib.alu_testbench in library work located at xsim.dir/work.

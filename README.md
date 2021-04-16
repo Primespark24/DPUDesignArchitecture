@@ -85,7 +85,9 @@ Have your Assembly Language design easily accessible while you work on DPU/ALU d
 Again, start with the __most complex instructions__ and consider the following questions (this is not an exhaustive list of questions you should ask yourselves. This is to get you started...)
 
 * What memory is required (i.e instruction, data, combined instruction/data) ? 
+    instruction memory, data memory
 * How does memory connect with/route to your registers? 
+    there is a wire from memory to 
 * How do registers connect with/route to your ALU? 
 * How is immediate data routed?
 * How does data get to the inputs of the ALU(s)>

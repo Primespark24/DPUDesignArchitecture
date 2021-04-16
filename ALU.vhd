@@ -2,7 +2,7 @@
 -- Arithmetic/Logic unit with add/sub, AND, OR, set less than
 ---------------------------------------------------------------
 library IEEE; 
-use IEEE.STD_LOGIC_1164.all; 
+ -- these libraries give us basic float Arithmeticuse IEEE.STD_LOGIC_1164.all; 
 use IEEE.STD_LOGIC_UNSIGNED.all;
 use IEEE.NUMERIC_STD.all;
 use IEEE.MATH_real.all;
@@ -12,17 +12,17 @@ use IEEE.fixed_pkg.all;
 
 --import floating point stuff
 
-entity alu is 
-  port(a, b:       in  STD_LOGIC_VECTOR(31 downto 0);
-       alucontrol: in  STD_LOGIC_VECTOR(2 downto 0);
-       result:     out STD_LOGIC_VECTOR(31 downto 0);
+entity alu is     -- define signals going in and out of the alu
+  port(a, b:       in  STD_LOGIC_VECTOR(31 downto 0); --a and b are the two signals that are alu does an operation for
+       alucontrol: in  STD_LOGIC_VECTOR(2 downto 0);  --this bit tells alu what operation we are performing 
+       result:     out STD_LOGIC_VECTOR(31 downto 0); --this is the result of the operation on a and b, sent out of alu
 end;
 
 architecture behave of alu is
-    signal zero : STD_LOGIC_VECTOR(31 downto 0) := (others => '0');
-    signal float_a, float_b : float(8 downto -23);
+    signal zero : STD_LOGIC_VECTOR(31 downto 0) := (others => '0'); --this is jsut constant 0 value, can make the result this if the opcode is undefinied for some reason
+    signal float_a, float_b : float(8 downto -23);          --used in converting the signals a and b to floats
 begin
-    float_a <- to_float(a);
+    float_a <- to_float(a);   --converting the signals to floats
     float_b <- to_float(b);
 
   -- determine alu operation from alucontrol bits 0 and 1
