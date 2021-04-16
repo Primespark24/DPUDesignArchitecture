@@ -1,5 +1,24 @@
-Vivado Simulator 2019.1
-Copyright 1986-1999, 2001-2019 Xilinx, Inc. All Rights Reserved.
-Running: C:/Xilinx/Vivado/2019.1/bin/unwrapped/win64.o/xelab.exe -wto 1a37538abd774cf99988fe2eb0736534 --incr --debug typical --relax --mt 2 -L secureip --snapshot alu_testbench_behav xil_defaultlib.alu_testbench -log elaborate.log 
+Vivado Simulator 2020.1
+Copyright 1986-1999, 2001-2020 Xilinx, Inc. All Rights Reserved.
+Running: C:/Xilinx/Vivado/2020.1/bin/unwrapped/win64.o/xelab.exe -wto 09d51daa63f44756b868648af05da8ab --incr --debug typical --relax --mt 2 -L xil_defaultlib -L secureip --snapshot alu_testbench_behav xil_defaultlib.alu_testbench -log elaborate.log 
 Using 2 slave threads.
-ERROR: [XSIM 43-3225] Cannot find design unit xil_defaultlib.alu_testbench in library work located at xsim.dir/work.
+Starting static elaboration
+Completed static elaboration
+Starting simulation data flow analysis
+Completed simulation data flow analysis
+Time Resolution for simulation is 1ps
+Compiling package std.standard
+Compiling package std.textio
+Compiling package ieee.std_logic_1164
+Compiling package ieee.std_logic_arith
+Compiling package ieee.std_logic_unsigned
+Compiling package ieee.numeric_std
+Compiling package ieee.math_real
+Compiling package xil_defaultlib.fixed_float_types
+Compiling package ieee_proposed.fixed_float_types
+Compiling package ieee_proposed.fixed_pkg
+Compiling package xil_defaultlib.float_pkg
+Compiling package xil_defaultlib.fixed_pkg
+Compiling architecture behave of entity xil_defaultlib.alu [alu_default]
+Compiling architecture alu_testbench of entity xil_defaultlib.alu_testbench
+Built simulation snapshot alu_testbench_behav
