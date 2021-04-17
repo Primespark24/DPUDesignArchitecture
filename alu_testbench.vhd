@@ -24,10 +24,48 @@ architecture alu_testbench of alu_testbench is
 begin 
     testproc: process begin
         wait for 10ns;
-        sim_alucontrol <= "000";
+        sim_alucontrol <= "000"; -- addfi instruction
         sim_a <= std_logic_vector(to_float(4.5));
         sim_b <= std_logic_vector(to_float(3.2));
         wait for 10ns;
+        assert sim_result = std_logic_vector(to_float(7.7)) report "Failed 4.5 addfi 3.2";
+
+        sim_alucontrol <= "001"; -- add instruction, essentially same test as add: addfi and add do same computation
+        sim_a <= std_logic_vector(to_float(-11));
+        sim_b <= std_logic_vector(to_float(-48));
+        wait for 10ns;
+        assert sim_result = std_logic_vector(to_float(-59)) report "Failed -11 add -48";
+        wait for 10ns; 
+        
+        sim_alucontrol <= "010"; -- sub instruction
+        sim_a <= std_logic_vector(to_float(-11));
+        sim_b <= std_logic_vector(to_float(22));
+        wait for 10ns;
+        assert sim_result = std_logic_vector(to_float(-33)) report "Failed -11 sub 22";
+        wait for 10ns; 
+        
+        sim_alucontrol <= "011"; -- mul instruction
+        sim_a <= std_logic_vector(to_float(-11.12));
+        sim_b <= std_logic_vector(to_float(58.56));
+        wait for 10ns;
+        assert sim_result = std_logic_vector(to_float(-651.1872)) report "Failed -11.12 mul 58.56";
+        wait for 10ns; 
+
+        sim_alucontrol <= "100"; -- div instruction
+        sim_a <= std_logic_vector(to_float(9974.54));
+        sim_b <= std_logic_vector(to_float(3.45));
+        wait for 10ns;
+        assert sim_result = std_logic_vector(to_float(2891.171014)) report "Failed 9974.54 div 3.45";
+        wait for 10ns; 
+
+        sim_alucontrol <= "101"; -- mod instruction
+        sim_a <= std_logic_vector(to_float(65));
+        sim_b <= std_logic_vector(to_float(7.5));
+        wait for 10ns;
+        assert sim_result = std_logic_vector(to_float(5)) report "Failed 65 mul 7.5";
+        wait for 10ns; 
+
+
     end process;
 
 sim_alu: alu port map(

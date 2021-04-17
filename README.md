@@ -60,14 +60,131 @@ As a Group choose your ALU operations and then design your ALU.
 * Create the VHDL implementation for just the ALU. Be sure to comment your code adequately. Include your neatly formatted VHDL code for the ALU here: 
 
     ```vhdl
-    -- put your VHDL for our ALU here
+    ---------------------------------------------------------------
+    -- Arithmetic/Logic unit with add/sub, AND, OR, set less than
+    ---------------------------------------------------------------
+    library IEEE; 
+     -- these libraries give us basic float Arithmetic
+    use IEEE.STD_LOGIC_1164.all; 
+    use IEEE.STD_LOGIC_UNSIGNED.all;
+        use IEEE.NUMERIC_STD.all;
+    use IEEE.MATH_real.all;
+    use work.fixed_float_types.all;
+    use work.float_pkg.all;
+    use work.fixed_pkg.all;
+
+    --import floating point stuff
+
+    entity alu is     -- define signals going in and out of the alu
+      port(a, b:       in  STD_LOGIC_VECTOR(31 downto 0); --a and b are the two signals that are alu does an operation for
+           alucontrol: in  STD_LOGIC_VECTOR(2 downto 0);  --this bit tells alu what operation we are performing 
+           result:     out STD_LOGIC_VECTOR(31 downto 0)); --this is the result of the operation on a and b, sent out of alu
+    end;
+
+    architecture behave of alu is
+        signal zero : STD_LOGIC_VECTOR(31 downto 0) := (others => '0'); --this is jsut constant 0 value, can make the result this if the opcode is undefinied for some reason
+        signal float_a, float_b : UNRESOLVED_float(8 downto -23);          --used in converting the signals a and b to floats
+    begin
+        float_a <= to_float(a);   --converting the signals to floats
+        float_b <= to_float(b);
+
+      -- determine alu operation from alucontrol bits 0 and 1
+      with alucontrol(2 downto 0) select result <=
+        STD_LOGIC_VECTOR(float_a + float_b)     when "000",   --addfi
+        STD_LOGIC_VECTOR(float_a + float_b)     when "001",   --add
+        STD_LOGIC_VECTOR(float_a - float_b)     when "010",   --sub
+        STD_LOGIC_VECTOR(float_a * float_b)     when "011",   --mul
+        STD_LOGIC_VECTOR(float_a / float_b)     when "100",   --div
+        STD_LOGIC_VECTOR(float_a mod float_b)   when "101",   --mod
+        --these may never be used but wanted to have 8 ops
+        a and b                 when "110",   --and
+        a or b                  when "111",   --or
+        zero                    when others;
+    end;
+
     ```
     Fig 3: VHDL for the ALU
 
 * Make a VHDL test bench to verify that the hardware for the new ALU design works. Be sure to comment your test bench code for your ALU adequately. Include your neatly formatted VHDL test bench code here: 
 
     ```vhdl
-    -- put your VHDL for your ALU test bench here
+    library IEEE;
+    use IEEE.std_logic_1164.all;
+    use IEEE.STD_LOGIC_UNSIGNED.all;
+    use IEEE.numeric_std.all;
+    use IEEE.NUMERIC_STD.all;
+    use IEEE.MATH_real.all;
+    use work.fixed_float_types.all;
+    use work.float_pkg.all;
+    use work.fixed_pkg.all;
+
+    entity alu_testbench is
+    end;
+
+    architecture alu_testbench of alu_testbench is 
+        component alu is
+            port(a, b: in STD_LOGIC_VECTOR(31 downto 0);
+                alucontrol: in STD_LOGIC_VECTOR(2 downto 0);
+                result: out STD_LOGIC_VECTOR(31 downto 0)
+            );
+        end component;
+        signal sim_a, sim_b: STD_LOGIC_VECTOR(31 downto 0);
+        signal sim_alucontrol: STD_LOGIC_VECTOR(2 downto 0);
+        signal sim_result: STD_LOGIC_VECTOR(31 downto 0);
+    begin 
+        testproc: process begin
+            wait for 10ns;
+            sim_alucontrol <= "000"; -- addfi instruction
+            sim_a <= std_logic_vector(to_float(4.5));
+            sim_b <= std_logic_vector(to_float(3.2));
+            wait for 10ns;
+            assert sim_result = std_logic_vector(to_float(7.7)) report "Failed 4.5 addfi 3.2";
+
+            sim_alucontrol <= "001"; -- add instruction, essentially same test as add: addfi and add do same computation
+            sim_a <= std_logic_vector(to_float(-11));
+            sim_b <= std_logic_vector(to_float(-48));
+            wait for 10ns;
+            assert sim_result = std_logic_vector(to_float(-59)) report "Failed -11 add -48";
+            wait for 10ns; 
+            
+            sim_alucontrol <= "010"; -- sub instruction
+            sim_a <= std_logic_vector(to_float(-11));
+            sim_b <= std_logic_vector(to_float(22));
+            wait for 10ns;
+            assert sim_result = std_logic_vector(to_float(-33)) report "Failed -11 sub 22";
+            wait for 10ns; 
+            
+            sim_alucontrol <= "011"; -- mul instruction
+            sim_a <= std_logic_vector(to_float(-11.12));
+            sim_b <= std_logic_vector(to_float(58.56));
+            wait for 10ns;
+            assert sim_result = std_logic_vector(to_float(-651.1872)) report "Failed -11.12 mul 58.56";
+            wait for 10ns; 
+
+            sim_alucontrol <= "100"; -- div instruction
+            sim_a <= std_logic_vector(to_float(9974.54));
+            sim_b <= std_logic_vector(to_float(3.45));
+            wait for 10ns;
+            assert sim_result = std_logic_vector(to_float(2891.171014)) report "Failed 9974.54 div 3.45";
+            wait for 10ns; 
+
+            sim_alucontrol <= "101"; -- mod instruction
+            sim_a <= std_logic_vector(to_float(65));
+            sim_b <= std_logic_vector(to_float(7.5));
+            wait for 10ns;
+            assert sim_result = std_logic_vector(to_float(5)) report "Failed 65 mul 7.5";
+            wait for 10ns; 
+
+
+        end process;
+
+    sim_alu: alu port map(
+            a => sim_a, 
+            b => sim_b, 
+            alucontrol => sim_alucontrol,
+            result => sim_result
+        );
+    end alu_testbench;
     ```
     Fig 4: VHDL Test Bench for the ALU
 
@@ -112,10 +229,8 @@ Make all the components for the DPU using vhdl. Wire up the components using por
 
 Use Vivado to render your high level schematic. If you have used a modular design this should look ok. If it is too messy, you will need to do a manual schematic using a free online cad tool as you did earlier.
 
-    ![ALU Diagram](dpu_diagram.jpg)
-
     Fig 5: Schematic of the DPU
-
+![ALU Diagram](IMG/roughDPU.png)
 
 *******************************************************************************
 ## Exercise 3: Design Walkthrough an FP_2 Mini Presentations
