@@ -13,7 +13,9 @@ lw    - 01000
 sw    - 01001
 beq   - 01010
 bne   - 01011
-jump  - 01100
+blt   - 01100
+bgt   - 01101
+jump  - 01110
 
 
 Registers are 6 bits, which means we get 64 total registers
