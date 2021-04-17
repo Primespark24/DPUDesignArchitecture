@@ -36,7 +36,25 @@ port (  curPC: in std_logic_vector(31 downto 0); -- current pc before incrementi
         PCout: std_logic_vector(31 downto 0); -- pc counter after incrementing
      );
 end component;
---this 
+--this multiplxer controls what goes intot he b port of alu
+component bsrc generic(width: integer);
+port(instr_type: in std_logic_vector(2 downto 0); --this is the alucontrol signal,
+     regB: in std_logic_vector(31 downto 0);         --tells us wht wire to plug into 
+     immB: in std_logic_vector(31 downto 0);         --the b part of alu
+     toB: out std_logic_vector(31 downto 0);          ---what actually goes to b src of alu
+  );
+end component;
+--this compoentn is used when we are jumping instrutions
+component pcbranch generic(width:integer);
+port(
+    constant_start: in STD_LOGIC_VECTOR(31 downto 0);
+    offset: in STD_LOGIC_VECTOR(18 downto 0);
+    Result: out STD_LOGIC_VECTOR(31 downto 0);
+    );
+end component;
+
+begin
+--wire up everything
 
 
 
