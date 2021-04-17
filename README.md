@@ -72,22 +72,22 @@ As a Group choose your ALU operations and then design your ALU.
     use work.fixed_float_types.all;
     use work.float_pkg.all;
     use work.fixed_pkg.all;
-    
+
     --import floating point stuff
-    
+
     entity alu is     -- define signals going in and out of the alu
       port(a, b:       in  STD_LOGIC_VECTOR(31 downto 0); --a and b are the two signals that are alu does an operation for
            alucontrol: in  STD_LOGIC_VECTOR(2 downto 0);  --this bit tells alu what operation we are performing 
            result:     out STD_LOGIC_VECTOR(31 downto 0)); --this is the result of the operation on a and b, sent out of alu
     end;
-    
+
     architecture behave of alu is
         signal zero : STD_LOGIC_VECTOR(31 downto 0) := (others => '0'); --this is jsut constant 0 value, can make the result this if the opcode is undefinied for some reason
         signal float_a, float_b : UNRESOLVED_float(8 downto -23);          --used in converting the signals a and b to floats
     begin
         float_a <= to_float(a);   --converting the signals to floats
         float_b <= to_float(b);
-    
+
       -- determine alu operation from alucontrol bits 0 and 1
       with alucontrol(2 downto 0) select result <=
         STD_LOGIC_VECTOR(float_a + float_b)     when "000",   --addfi
@@ -153,10 +153,8 @@ Make all the components for the DPU using vhdl. Wire up the components using por
 
 Use Vivado to render your high level schematic. If you have used a modular design this should look ok. If it is too messy, you will need to do a manual schematic using a free online cad tool as you did earlier.
 
-    ![ALU Diagram](dpu_diagram.jpg)
-
     Fig 5: Schematic of the DPU
-
+![ALU Diagram](IMG/roughDPU.png)
 
 *******************************************************************************
 ## Exercise 3: Design Walkthrough an FP_2 Mini Presentations
