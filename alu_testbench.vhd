@@ -10,7 +10,10 @@ use work.fixed_pkg.all;
 
 entity alu_testbench is
 end;
-
+------------------------------------------------------------------------------------------------------------
+-- Alu_testbench simulates ALU - It does mathematical operations
+-- Inputs: A, B (32 bit signals that are the two numbers being added/subtracted/multiplied/etc)
+-- Output: aluresult (Result of the operation between A, B)
 architecture alu_testbench of alu_testbench is 
     component alu is
         port(a, b: in STD_LOGIC_VECTOR(31 downto 0);
@@ -18,6 +21,8 @@ architecture alu_testbench of alu_testbench is
             result: out STD_LOGIC_VECTOR(31 downto 0)
         );
     end component;
+    
+    --Signals defined for simulation - Same as alu component
     signal sim_a, sim_b: STD_LOGIC_VECTOR(31 downto 0);
     signal sim_alucontrol: STD_LOGIC_VECTOR(2 downto 0);
     signal sim_result: STD_LOGIC_VECTOR(31 downto 0);
@@ -64,8 +69,6 @@ begin
         wait for 10ns;
         assert sim_result = std_logic_vector(to_float(5)) report "Failed 65 mul 7.5";
         wait for 10ns; 
-
-
     end process;
 
 sim_alu: alu port map(

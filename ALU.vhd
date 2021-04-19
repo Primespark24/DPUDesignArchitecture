@@ -11,19 +11,22 @@ use work.fixed_float_types.all;
 use work.float_pkg.all;
 use work.fixed_pkg.all;
 
---import floating point stuff
-
+------------------------------------------------------------------------------------------------------------
+--Alu does mathematical operations
+-- Inputs: A, B (32 bit signals that are the two numbers being added/subtracted/multiplied/etc)
+-- Input: alucontrol - (3 bit singal that tells alu what operation is being performed)
+-- Output: aluresult (Result of the operation between A, B)
 entity alu is     -- define signals going in and out of the alu
-  port(a, b:       in  STD_LOGIC_VECTOR(31 downto 0); --a and b are the two signals that are alu does an operation for
-       alucontrol: in  STD_LOGIC_VECTOR(2 downto 0);  --this bit tells alu what operation we are performing 
-       result:     out STD_LOGIC_VECTOR(31 downto 0)); --this is the result of the operation on a and b, sent out of alu
+  port(a, b:       in  STD_LOGIC_VECTOR(31 downto 0); 
+       alucontrol: in  STD_LOGIC_VECTOR(2 downto 0);  
+       result:     out STD_LOGIC_VECTOR(31 downto 0));
 end;
 
 architecture behave of alu is
-    signal zero : STD_LOGIC_VECTOR(31 downto 0) := (others => '0'); --this is jsut constant 0 value, can make the result this if the opcode is undefinied for some reason
-    signal float_a, float_b : UNRESOLVED_float(8 downto -23);          --used in converting the signals a and b to floats
+    signal zero : STD_LOGIC_VECTOR(31 downto 0) := (others => '0');    --Constant 0 value, result if opcode is undefined 
+    signal float_a, float_b : UNRESOLVED_float(8 downto -23);          --Converted signals of a and b to floats
 begin
-    float_a <= to_float(a);   --converting the signals to floats
+    float_a <= to_float(a);   --Convert signals to floats
     float_b <= to_float(b);
 
   -- determine alu operation from alucontrol bits 0 and 1

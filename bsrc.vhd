@@ -4,6 +4,7 @@ use STD.TEXTIO.all;
 use IEEE.STD_LOGIC_UNSIGNED.all;
 use IEEE.NUMERIC_STD.all;
 
+------------------------------------------------------------------------------------------------------------
 --Multiplexer that controls what goes into the b port of the alu 
 -- Input: instr_Type (Alucontrol signal that specifies which type of instruction is being executed)
 -- Input: regB (Output value from register file component - Only used for R type instructions)

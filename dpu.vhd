@@ -17,7 +17,8 @@ end;
 architecture struct of datapath is
 ------------------------------------------------------------------------------------------------------------
 --Alu does mathematical operations
--- Inputs: A, B (32 bit singals that are the two numbers being added/subtracted/multiplied/etc)
+-- Inputs: A, B (32 bit signals that are the two numbers being added/subtracted/multiplied/etc)
+-- Input: alucontrol - (3 bit singal that tells alu what operation is being performed)
 -- Output: aluresult (Result of the operation between A, B)
 component alu 
 port(a, b: in std_logic_vector(31 downto 0);    
@@ -47,7 +48,7 @@ end component;
 -- Input: curPC (Current value of the program counter before increment by 4)
 -- Input: clk (Used to update/run processes)
 -- Output: PCout (Value of program counter after incrementing by 4)
-component PC_Plus4 
+component pcAdder 
 port (curPC: in std_logic_vector(31 downto 0);
       clk: in std_logic;
       PCout: std_logic_vector(31 downto 0));
@@ -78,7 +79,7 @@ port(constant_start: in STD_LOGIC_VECTOR(31 downto 0);
 end component;
 
 ------------------------------------------------------------------------------------------------------------
---TODO wire up the multiplexer that determines inrtds type
+--TODO wire up the multiplexer that determines instruction type
 begin
 --wire up everything
 four <= const_zero((width-1) downto 4) & X"4"; -- signal to add 4 to CP in PC_Plus4
