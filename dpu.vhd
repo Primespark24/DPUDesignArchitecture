@@ -49,15 +49,15 @@ end component;
 -- Output: PCout (Value of program counter after incrementing by 4)
 component PC_Plus4 
 port (curPC: in std_logic_vector(31 downto 0);
-      clk: in std_logic;                  
-      PCout: std_logic_vector(31 downto 0)); -- pc counter after incrementing
+      clk: in std_logic;
+      PCout: std_logic_vector(31 downto 0));
 end component;
 
 ------------------------------------------------------------------------------------------------------------
 --Multiplexer that controls what goes into the b port of the alu 
 -- Input: instr_Type (Alucontrol signal that specifies which type of instruction is being executed)
--- Input: regB (Tells us what wire to plug into?)
--- Input: immB (Immediate value that is from the 'B' signal of the ALU)
+-- Input: regB (Output value from register file component - Only used for R type instructions)
+-- Input: immB (Bottom 32 bits of any instruction signal, used only for F/I-Type instructions)
 -- Output: toB (Value that is sent to 'B' signal of the ALU)
 component bsrc 
 port(instr_type: in std_logic_vector(2 downto 0);
@@ -67,14 +67,18 @@ port(instr_type: in std_logic_vector(2 downto 0);
 end component;
 
 ------------------------------------------------------------------------------------------------------------
---this component is used when we are jumping instrutions
+--Component used for J-type instructions only
+-- Input: constant_start (The memory address of the first instruction)
+-- Input: offset (Number added/subtracted to constant_start to jump to a new memory address, from control unit)
+-- Output: result (Result of constant_start +- offset)
 component pcbranch
 port(constant_start: in STD_LOGIC_VECTOR(31 downto 0);
-     offset: in STD_LOGIC_VECTOR(18 downto 0); --offset ome from control unit as well
-     Result: out STD_LOGIC_VECTOR(31 downto 0)); --the PC going after branch
+     offset: in STD_LOGIC_VECTOR(18 downto 0);
+     Result: out STD_LOGIC_VECTOR(31 downto 0)); 
 end component;
---TODO wire up the multiplexer that determines inrtds type
 
+------------------------------------------------------------------------------------------------------------
+--TODO wire up the multiplexer that determines inrtds type
 begin
 --wire up everything
 four <= const_zero((width-1) downto 4) & X"4"; -- signal to add 4 to CP in PC_Plus4

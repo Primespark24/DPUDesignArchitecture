@@ -1,23 +1,28 @@
---library IEEE;
---use IEEE.STD_LOGIC_1164.all;
---use STD.TEXTIO.all;
---use IEEE.STD_LOGIC_UNSIGNED.all;
---use IEEE.NUMERIC_STD.all;
-----this determines whether the "b" signal into the alu is
----- from the instr (immidiate memory) or from a register 
---
---entitiy bsrc is --mulitplexer for what signal into b of alu
---port (instr_type: in std_logic_vector(2 downto 0); --this is the alucontrol signal,
---     regB: in std_logic_vector(31 downto 0);         --tells us wht wire to plug into 
---     immB: in std_logic_vector(31 downto 0);         --the b part of alu
---     toB: out std_logic_vector(31 downto 0);  
---     );
---end;
---
---architecture behave of bsrc is 
+library IEEE;
+use IEEE.STD_LOGIC_1164.all;
+use STD.TEXTIO.all;
+use IEEE.STD_LOGIC_UNSIGNED.all;
+use IEEE.NUMERIC_STD.all;
+
+--Multiplexer that controls what goes into the b port of the alu 
+-- Input: instr_Type (Alucontrol signal that specifies which type of instruction is being executed)
+-- Input: regB (Output value from register file component - Only used for R type instructions)
+-- Input: immB (Bottom 32 bits of any instruction signal, used only for F/I-Type instructions)
+-- Output: toB (Value that is sent to 'B' signal of the ALU)
+entity bsrc is
+port(instr_type: in std_logic_vector(2 downto 0);
+     regB: in std_logic_vector(31 downto 0);
+     immB: in std_logic_vector(31 downto 0);
+     toB: out std_logic_vector(31 downto 0));
+end;
+
+-- The outout toB will depend on the type of instruction (alucontrol bits)
+-- If the instruction is a I-type instruction, output will be immB
+-- Else, the output will be regB
+architecture behave of bsrc is 
 begin 
-    with instr_type(2 downto 0) select toB<=    --based on the aluconrol bits
-    immB when "000",   --if alucontrol is 000, we are doign addfi so we need the imm
-    regB when others; --other times we just do what comes out of reg files
+    with instr_type(2 downto 0) select toB <=
+    immB when "000",   
+    regB when others; 
 end;
     
