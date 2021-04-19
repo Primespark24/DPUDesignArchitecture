@@ -1,59 +1,77 @@
 -- heavy citation to Kent Jones's MIPS datapath
-
 library IEEE;
 use IEEE.STD_LOGIC_1164.all; 
 use IEEE.NUMERIC_STD.all;
 use IEEE.math_real.all;
 
-enitity datapath is 
-    generic(width: integer);
-    port(clk, reset:     in std_logic;
-
-    --there will be more signals and such added when we implement the control unit
-
-    );
+--High level entity that connects various components of the Micro Pirate Processor
+-- Inputs: ?
+-- Inputs: ?
+-- Inputs: ?
+-- Inputs: ?
+-- Outputs: ?
+entity datapath is 
+    port(clk, reset:     in std_logic);  --there will be more signals and such added when we implement the control unit
 end;
 
 architecture struct of datapath is
---this alu does all of our mathematical operations
-component alu generic(width:integer); --what is the gnereic stuff?
-port(a, b: in std_logic_vector(31 downto 0);    -- a and b are the signals going into the alu to have operation
-    alucontrol: in std_logic_vector(2 downto 0);--
-    aluresult: out std_logic_vector(31 downto 0 );
-    );
+------------------------------------------------------------------------------------------------------------
+--Alu does mathematical operations
+-- Inputs: A, B (32 bit singals that are the two numbers being added/subtracted/multiplied/etc)
+-- Output: aluresult (Result of the operation between A, B)
+component alu 
+port(a, b: in std_logic_vector(31 downto 0);    
+     alucontrol: in std_logic_vector(2 downto 0);
+     aluresult: out std_logic_vector(31 downto 0));
 end component;
---this regfile handles the requisiton of register values
+
+------------------------------------------------------------------------------------------------------------
+--Regfile handles the requisiton of register values
+-- Input: clk (Holds data in registers)
+-- Input: writeIn (Control bit that determines if we are writing to register files)
+-- Inputs: regAIn1, regAIn2 (Adresses of registers we are reading from)
+-- Outputs: regOut1, regOut2 (Contents of registers we read from)
+-- Input: writeDest (Adresses of registers we are writing to)  --writerdest comes from instr handled by control unit
+-- Input: destContents (Data that is being written to adress held at writeDest)
 component regfile generic(width: integer);
-port(clk, writeIn: in std_logic ; --clock to hold the data in registers, write in determines if we are writeng ot register files
-     regAIn1, regAIn2, : in std_logic(integer(ceil(log2(real(width))))-1) downto 0)); --the address of the regisers we want
-     regOut1, regOut2: out std_logic_vector(width-1 downto 0);              --the contents of the registers we wanted
-     writeDest : in std_logic(integer(ceil(log2(real(width))))-1) downto 0)); --if we are wrinting to a register, this is 
-         --writerdest comes from instr handled by control unit              --the address of the destination
-     destContents: in  std_logic_vector(width-1 downto 0); --what is to be added at writeDest
-    );
+port(clk, writeIn: in std_logic; 
+     regAIn1, regAIn2, : in std_logic(integer(ceil(log2(real(width))))-1) downto 0));
+     writeDest : in std_logic(integer(ceil(log2(real(width))))-1) downto 0));
+     destContents: in  std_logic_vector(width-1 downto 0);
+     regOut1, regOut2: out std_logic_vector(width-1 downto 0)); 
 end component;
---this is the adder that increments the pc by 4
-component PC_Plus4 generic(width: integer); 
-port (  curPC: in std_logic_vector(31 downto 0); -- current pc before incrementing
-        clk: in std_logic;                  --clock for updating
-        PCout: std_logic_vector(31 downto 0); -- pc counter after incrementing
-     );
+
+
+------------------------------------------------------------------------------------------------------------
+--Adder that increments program counter by 4
+-- Input: curPC (Current value of the program counter before increment by 4)
+-- Input: clk (Used to update/run processes)
+-- Output: PCout (Value of program counter after incrementing by 4)
+component PC_Plus4 
+port (curPC: in std_logic_vector(31 downto 0);
+      clk: in std_logic;                  
+      PCout: std_logic_vector(31 downto 0)); -- pc counter after incrementing
 end component;
---this multiplxer controls what goes intot he b port of alu
-component bsrc generic(width: integer);
-port(instr_type: in std_logic_vector(2 downto 0); --this is the alucontrol signal ,from contl unit
-     regB: in std_logic_vector(31 downto 0);         --tells us wht wire to plug into 
-     immB: in std_logic_vector(31 downto 0);         --the b part of alu
-     toB: out std_logic_vector(31 downto 0);          ---what actually goes to b src of alu
-  );
+
+------------------------------------------------------------------------------------------------------------
+--Multiplexer that controls what goes into the b port of the alu 
+-- Input: instr_Type (Alucontrol signal that specifies which type of instruction is being executed)
+-- Input: regB (Tells us what wire to plug into?)
+-- Input: immB (Immediate value that is from the 'B' signal of the ALU)
+-- Output: toB (Value that is sent to 'B' signal of the ALU)
+component bsrc 
+port(instr_type: in std_logic_vector(2 downto 0);
+     regB: in std_logic_vector(31 downto 0);
+     immB: in std_logic_vector(31 downto 0);
+     toB: out std_logic_vector(31 downto 0));
 end component;
---this compoentn is used when we are jumping instrutions
-component pcbranch generic(width:integer);
-port(
-    constant_start: in STD_LOGIC_VECTOR(31 downto 0);
-    offset: in STD_LOGIC_VECTOR(18 downto 0); --offset ome from control unit as well
-    Result: out STD_LOGIC_VECTOR(31 downto 0); --the PC going after branch
-    );
+
+------------------------------------------------------------------------------------------------------------
+--this component is used when we are jumping instrutions
+component pcbranch
+port(constant_start: in STD_LOGIC_VECTOR(31 downto 0);
+     offset: in STD_LOGIC_VECTOR(18 downto 0); --offset ome from control unit as well
+     Result: out STD_LOGIC_VECTOR(31 downto 0)); --the PC going after branch
 end component;
 --TODO wire up the multiplexer that determines inrtds type
 
