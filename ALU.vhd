@@ -19,7 +19,7 @@ use work.fixed_pkg.all;
 entity alu is     -- define signals going in and out of the alu
   port(a: in STD_LOGIC_VECTOR(31 downto 0);
        b: in STD_LOGIC_VECTOR(31 downto 0);
-       alucontrol: in STD_LOGIC_VECTOR(2 downto 0);  
+       alucontrol: in STD_LOGIC_VECTOR(4 downto 0);  
        result: out STD_LOGIC_VECTOR(31 downto 0));
 end;
 
