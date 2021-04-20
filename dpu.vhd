@@ -108,19 +108,47 @@ port(constant_start: in STD_LOGIC_VECTOR(31 downto 0);
 end component;
 
 ------------------------------------------------------------------------------------------------------------
---TODO wire up the multiplexer that determines instruction type
-begin
---wire up everything
-four <= const_zero((width-1) downto 4) & X"4"; -- signal to add 4 to CP in PC_Plus4
+signal const_zero : STD_LOGIC_VECTOR(31 downto 0) := (others => '0')
+signal four: STD_LOGIC_VECTOR(31 downto 0);
+signal PC: STD_LOGIC_VECTOR(31 downto 0);
+signal PC_jump_amount: STD_LOGIC_VECTOR(31 downto 0);
+signal PC_next: STD_LOGIC_VECTOR(31 downto 0);  --After PC is incremented or jumped to?
+signal RF_a: STD_LOGIC_VECTOR(31 downto 0);
+signal RF_b: STD_LOGIC_VECTOR(31 downto 0);
+signal instruction_: STD_LOGIC_VECTOR(63 downto 0);
+signal ALU_result: STD_LOGIC_VECTOR(31 downto 0);
+signal DM_output: STD_LOGIC_VECTOR(31 downto 0);
 
-rf: component regfile generic(width: integer);
-    port map(clk->clk, writeIn->we3, --clock to hold the data in registers
-        regAIn1-> instr(17 downto 12), regAIn2-> instr(11 downto 6), -- take the bits of intra that are register addresses
-        regOut1, regOut2: out std_logic_vector(width-1 downto 0);              --the contents of the registers we wanted
-        writeDest-> ; --if we are wrinting to a register, this is where in registers we put the aluresult 
-            --writerdest comes from instr handled by control unit              --the address of the destination
-        destContents: in  std_logic_vector(width-1 downto 0); --what is to be added at writeDest
-        );
+
+begin
+four <= const_zero(32 downto 4) & X"4"; -- signal to add 4 to CP in PC_Plus4
+
+---- Wiring for pcAdder
+pcAddComp : pcAdder port map(curPC => PC, clk => clk, PCout => PC_next);
+
+---- Wiring for pcbranch 
+pcBranchComp : pcbranch port map(constant_start => const_zero, offset => PC_jump_amount, Result => PC_next); --Don't know what first memory address is
+
+---- Wiring for ALU
+ALUComp : alu port map(a => RF_a, b => RF_b, alucontrol => instruction_(63 downto 62), result => ALU_result);
+
+---- Wiring for register file 
+RFComp : regfile port map(clk => clk, instr_type => instruction_(63 downto 62), instruction => instruction_, DM_result => DM_output, OutA => RF_a, OutB => RF_b);
+
+---- Wiring for data_memory 
+-- Add ReadBit (From control unit)
+-- Add WriteBit (From control unit)
+-- Read address and write address are probably wrong. May need more signals
+DMComp : data_memory port map(clk => clk, writeData => RF_b, readAddress => ALU_result, writeAddress => ALU_result, result => DM_result);
+
+---- Wiring for instruction_mem 
+-- PC_value is probably wrong
+IMComp : instruction_mem port map(PC_value => PC(5 downto 0), instruc => instruction_);
+
+---- Wiring for bsrc
+BSRCComp : bsrc port map(instr_type => instruction_(63 downto 62), regB => RF_b, immB => instruction_(31 downto 0), toB => RF_b);
+
+end;
 
 
 

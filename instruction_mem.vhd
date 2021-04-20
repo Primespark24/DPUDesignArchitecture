@@ -9,11 +9,11 @@ use IEEE.NUMERIC_STD.all;
 --this code reads the .dat file and sends it out as a 64-bit instr
 entity instruction_mem is -- instruction memory
   port(PC_value: in  STD_LOGIC_VECTOR(5 downto 0);
-       instruc: out STD_LOGIC_VECTOR(31 downto 0)); --the signal out containing the instruction
+       instruc: out STD_LOGIC_VECTOR(63 downto 0)); --the signal out containing the instruction
   end;
 
 architecture behave of imem is
-  type ramtype is array (63 downto 0) of STD_LOGIC_VECTOR(31 downto 0);
+  type ramtype is array (63 downto 0) of STD_LOGIC_VECTOR(63 downto 0);
 
 
   -- function to initialize the instruction memory from a data file
