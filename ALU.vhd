@@ -31,7 +31,7 @@ begin
     float_b <= to_float(b);
 
   -- determine alu operation from alucontrol bits 0 and 1
-  with alucontrol(2 downto 0) select result <=
+  with alucontrol(2 downto 0) select aluresult <=
     STD_LOGIC_VECTOR(float_a + float_b)     when "000",   --addfi
     STD_LOGIC_VECTOR(float_a + float_b)     when "001",   --add
     STD_LOGIC_VECTOR(float_a - float_b)     when "010",   --sub

@@ -18,7 +18,7 @@ architecture alu_testbench of alu_testbench is
     component alu is
         port(a, b: in STD_LOGIC_VECTOR(31 downto 0);
             alucontrol: in STD_LOGIC_VECTOR(4 downto 0);
-            result: out STD_LOGIC_VECTOR(31 downto 0)
+            aluresult: out STD_LOGIC_VECTOR(31 downto 0)
         );
     end component;
     
@@ -75,6 +75,6 @@ sim_alu: alu port map(
         a => sim_a, 
         b => sim_b, 
         alucontrol => sim_alucontrol,
-        result => sim_result
+        aluresult => sim_result
     );
 end alu_testbench;
