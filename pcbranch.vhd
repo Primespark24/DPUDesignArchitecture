@@ -18,7 +18,7 @@ port(constant_start: in STD_LOGIC_VECTOR(31 downto 0);
 end;
 
 ------------------------------------------------------------------------------------------------------------
---
+-- Add the offset to the constant_start and wire that to the result
 architecture behave of pcbranch is
 signal extendedOffset: STD_LOGIC_VECTOR(31 downto 0);
 begin

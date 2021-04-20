@@ -42,6 +42,25 @@ port(clk, writeIn: in std_logic;
      regOut1, regOut2: out std_logic_vector(width-1 downto 0)); 
 end component;
 
+-------------------------------------------------------------------- 
+--Data memory holds program data
+-- Input: clk (Used to update/run processes)
+-- Input: ReadBit (Control bit that specifies if data should be read)
+-- Input: WriteBit (Control bit that specifies if data should be written)
+-- Input: ALUResult (Result from previous ALU operation)
+-- Input: writeData (Data that will be put into memory)
+-- Input: readAddress (32 bit signal of which memory location to read from)
+-- Input: writeAddress (32 bit signal of which memory location to write to)
+-- Output: result (Signal sent back to regfile for loadword instructions)
+component data_memory
+  port(clk:  in STD_LOGIC;
+       ReadBit: in STD_LOGIC;
+       WriteBit: in STD_LOGIC;
+       writeData: in STD_LOGIC_Vector(32 downto 0);
+       readAddress: in STD_LOGIC_Vector(32 downto 0);
+       writeAddress: in STD_LOGIC_Vector(32 downto 0);
+       result: out STD_LOGIC_VECTOR(32 downto 0));
+end component;
 
 ------------------------------------------------------------------------------------------------------------
 --Adder that increments program counter by 4
