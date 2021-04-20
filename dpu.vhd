@@ -135,7 +135,7 @@ pcAddComp : pcAdder port map(curPC => PC, clk => clk, PCout => PC_next);
 pcBranchComp : pcbranch port map(constant_start => const_zero, offset => PC_jump_amount, Result => PC_next); --Don't know what first memory address is
 
 ---- Wiring for ALU
-ALUComp : alu port map(a => RF_a, b => RF_b, alucontrol => instr(61 downto 57), result => ALU_result);
+ALUComp : alu port map(a => RF_a, b => RF_b, alucontrol => instr(61 downto 57), aluresult => ALU_result);
 
 ---- Wiring for register file 
 RFComp : regfile port map(clk => clk, instr_type => instr(63 downto 62), instruction => instr, DM_result => DM_output, OutA => RF_a, OutB => RF_b);
