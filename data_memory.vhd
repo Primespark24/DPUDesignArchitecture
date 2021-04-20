@@ -19,18 +19,18 @@ entity data_memory is -- data memory
   port(clk:  in STD_LOGIC;
        ReadBit: in STD_LOGIC;
        WriteBit: in STD_LOGIC;
-       writeData: in STD_LOGIC_Vector(32 downto 0);
-       readAddress: in STD_LOGIC_Vector(32 downto 0);
-       writeAddress: in STD_LOGIC_Vector(32 downto 0);
-       result: out STD_LOGIC_VECTOR(32 downto 0));
+       writeData: in STD_LOGIC_Vector(31 downto 0);
+       readAddress: in STD_LOGIC_Vector(31 downto 0);
+       writeAddress: in STD_LOGIC_Vector(31 downto 0);
+       result: out STD_LOGIC_VECTOR(31 downto 0));
 end;
 
 -------------------------------------------------------------------- 
 -- Data memory holds 64 32-bit numbers
 architecture behave of data_memory is
-  type ramtype is array (63 downto 0) of STD_LOGIC_VECTOR(32 downto 0);
+  type ramtype is array (63 downto 0) of STD_LOGIC_VECTOR(31 downto 0);
   signal mem: ramtype;
-  signal const_zero : STD_LOGIC_VECTOR(32 downto 0) := (others => '0')
+  signal const_zero : STD_LOGIC_VECTOR(31 downto 0) := (others => '0')
 begin
 
   -------------------------------------------------------------------- 

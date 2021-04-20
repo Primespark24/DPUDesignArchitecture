@@ -8,18 +8,16 @@ use IEEE.STD_LOGIC_UNSIGNED.all;
 use IEEE.NUMERIC_STD.all;
 --this code reads the .dat file and sends it out as a 64-bit instr
 entity instruction_mem is -- instruction memory
-  generic(width: integer);
-  port(a:  in  STD_LOGIC_VECTOR(5 downto 0);
-    instruc: out STD_LOGIC_VECTOR((width-1) downto 0)); --the signal out containing the instruction
+  port(PC_value: in  STD_LOGIC_VECTOR(5 downto 0);
+       instruc: out STD_LOGIC_VECTOR(31 downto 0)); --the signal out containing the instruction
   end;
 
 architecture behave of imem is
-  type ramtype is array (63 downto 0) of STD_LOGIC_VECTOR((width-1) downto 0);
+  type ramtype is array (63 downto 0) of STD_LOGIC_VECTOR(31 downto 0);
 
 
   -- function to initialize the instruction memory from a data file
   impure function InitRamFromFile ( RamFileName : in string ) return RamType is
-
   variable ch: character;
   variable index : integer;
   variable result: signed((width-1) downto 0);
@@ -64,8 +62,11 @@ architecture behave of imem is
   signal mem: ramtype := InitRamFromFile("memfile_3.dat");
 
 begin
-  process ( a ) is
+
+------------------------------------------------------------------------------------------------------------
+-- Process to read memory from register file based on program counter
+  process (PC_value) is
   begin
-    rd <= mem( to_integer(unsigned(a)) );
+    rd <= mem(to_integer(unsigned(PC_value)));
   end process;
 end behave;

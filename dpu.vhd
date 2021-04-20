@@ -42,7 +42,7 @@ port(clk, writeIn: in std_logic;
      regOut1, regOut2: out std_logic_vector(width-1 downto 0)); 
 end component;
 
--------------------------------------------------------------------- 
+------------------------------------------------------------------------------------------------------------
 --Data memory holds program data
 -- Input: clk (Used to update/run processes)
 -- Input: ReadBit (Control bit that specifies if data should be read)
@@ -56,11 +56,22 @@ component data_memory
   port(clk:  in STD_LOGIC;
        ReadBit: in STD_LOGIC;
        WriteBit: in STD_LOGIC;
-       writeData: in STD_LOGIC_Vector(32 downto 0);
-       readAddress: in STD_LOGIC_Vector(32 downto 0);
-       writeAddress: in STD_LOGIC_Vector(32 downto 0);
-       result: out STD_LOGIC_VECTOR(32 downto 0));
+       writeData: in STD_LOGIC_Vector(31 downto 0);
+       readAddress: in STD_LOGIC_Vector(31 downto 0);
+       writeAddress: in STD_LOGIC_Vector(31 downto 0);
+       result: out STD_LOGIC_VECTOR(31 downto 0));
 end component;
+
+
+------------------------------------------------------------------------------------------------------------
+--Memory location for all instructions from assembly program
+-- Input: PC_value (Current value of the program counter)
+-- Output: instruc (Bits for current instruction)
+component instruction_mem
+port(PC_value: in  STD_LOGIC_VECTOR(5 downto 0);
+     instruc: out STD_LOGIC_VECTOR(31 downto 0)); --the signal out containing the instruction
+end component;
+
 
 ------------------------------------------------------------------------------------------------------------
 --Adder that increments program counter by 4
