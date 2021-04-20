@@ -52,7 +52,7 @@ begin
   process(DM_result, mem, clk) begin
     if instr_type = "01" then   -- R-type
         mem(to_integer(unsigned(instruction(18 downto 13)))) <= DM_result;
-    elseif instr_type = "11" then
+    elsif instr_type = "11" then
         mem(to_integer(unsigned(instruction(12 downto 7)))) <= DM_result;
     end if;
   end process;

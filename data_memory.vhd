@@ -30,7 +30,7 @@ end;
 architecture behave of data_memory is
   type ramtype is array (63 downto 0) of STD_LOGIC_VECTOR(31 downto 0);
   signal mem: ramtype;
-  signal const_zero : STD_LOGIC_VECTOR(31 downto 0) := (others => '0')
+  signal const_zero : STD_LOGIC_VECTOR(31 downto 0) := (others => '0');
 begin
 
   -------------------------------------------------------------------- 

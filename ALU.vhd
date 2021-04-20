@@ -17,9 +17,10 @@ use work.fixed_pkg.all;
 -- Input: alucontrol - (3 bit singal that tells alu what operation is being performed)
 -- Output: aluresult (Result of the operation between A, B)
 entity alu is     -- define signals going in and out of the alu
-  port(a, b:       in  STD_LOGIC_VECTOR(31 downto 0); 
-       alucontrol: in  STD_LOGIC_VECTOR(2 downto 0);  
-       result:     out STD_LOGIC_VECTOR(31 downto 0));
+  port(a: in STD_LOGIC_VECTOR(31 downto 0);
+       b: in STD_LOGIC_VECTOR(31 downto 0);
+       alucontrol: in STD_LOGIC_VECTOR(4 downto 0);  
+       result: out STD_LOGIC_VECTOR(31 downto 0));
 end;
 
 architecture behave of alu is

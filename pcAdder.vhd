@@ -14,14 +14,16 @@ use IEEE.NUMERIC_STD.all;
 entity pcAdder is     
 port (curPC: in std_logic_vector(31 downto 0);
       clk: in std_logic;
-      PCout: std_logic_vector(31 downto 0));
+      PCout: out std_logic_vector(31 downto 0));
 end;
-
 ------------------------------------------------------------------------------------------------------------
 -- Increment PC by 4 every clock cycle
 architecture behave of pcAdder is
 begin
-    if rising_edge(clk) then
-        PC_OUT <= PC + 4;
+process(clk) is 
+begin
+    if clk'event and clk = '1' then
+        PCout <= curPC + 4;
     end if;
+end process;
 end;

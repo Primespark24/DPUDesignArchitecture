@@ -3,6 +3,10 @@ library IEEE;
 use IEEE.STD_LOGIC_1164.all; 
 use IEEE.NUMERIC_STD.all;
 use IEEE.math_real.all;
+use work.fixed_float_types.all;
+use work.float_pkg.all;
+use work.fixed_pkg.all;
+use IEEE.STD_LOGIC_UNSIGNED.all;
 
 --High level entity that connects various components of the Micro Pirate Processor
 -- Inputs: ?
@@ -20,9 +24,10 @@ architecture struct of datapath is
 -- Inputs: A, B (32 bit signals that are the two numbers being added/subtracted/multiplied/etc)
 -- Input: alucontrol - (3 bit singal that tells alu what operation is being performed)
 -- Output: aluresult (Result of the operation between A, B)
-component alu 
-port(a, b: in std_logic_vector(31 downto 0);    
-     alucontrol: in std_logic_vector(2 downto 0);
+component alu
+port(a: in std_logic_vector(31 downto 0);
+     b: in std_logic_vector(31 downto 0);
+     alucontrol: in std_logic_vector(4 downto 0);
      aluresult: out std_logic_vector(31 downto 0));
 end component;
 
@@ -108,14 +113,14 @@ port(constant_start: in STD_LOGIC_VECTOR(31 downto 0);
 end component;
 
 ------------------------------------------------------------------------------------------------------------
-signal const_zero : STD_LOGIC_VECTOR(31 downto 0) := (others => '0')
+signal const_zero : STD_LOGIC_VECTOR(31 downto 0) := (others => '0');
 signal four: STD_LOGIC_VECTOR(31 downto 0);
 signal PC: STD_LOGIC_VECTOR(31 downto 0);
 signal PC_jump_amount: STD_LOGIC_VECTOR(31 downto 0);
 signal PC_next: STD_LOGIC_VECTOR(31 downto 0);  --After PC is incremented or jumped to?
 signal RF_a: STD_LOGIC_VECTOR(31 downto 0);
 signal RF_b: STD_LOGIC_VECTOR(31 downto 0);
-signal instruction_: STD_LOGIC_VECTOR(63 downto 0);
+signal instr: STD_LOGIC_VECTOR(63 downto 0);
 signal ALU_result: STD_LOGIC_VECTOR(31 downto 0);
 signal DM_output: STD_LOGIC_VECTOR(31 downto 0);
 
@@ -130,23 +135,23 @@ pcAddComp : pcAdder port map(curPC => PC, clk => clk, PCout => PC_next);
 pcBranchComp : pcbranch port map(constant_start => const_zero, offset => PC_jump_amount, Result => PC_next); --Don't know what first memory address is
 
 ---- Wiring for ALU
-ALUComp : alu port map(a => RF_a, b => RF_b, alucontrol => instruction_(63 downto 62), result => ALU_result);
+ALUComp : alu port map(a => RF_a, b => RF_b, alucontrol => instr(61 downto 57), result => ALU_result);
 
 ---- Wiring for register file 
-RFComp : regfile port map(clk => clk, instr_type => instruction_(63 downto 62), instruction => instruction_, DM_result => DM_output, OutA => RF_a, OutB => RF_b);
+RFComp : regfile port map(clk => clk, instr_type => instr(63 downto 62), instruction => instr, DM_result => DM_output, OutA => RF_a, OutB => RF_b);
 
 ---- Wiring for data_memory 
 -- Add ReadBit (From control unit)
 -- Add WriteBit (From control unit)
 -- Read address and write address are probably wrong. May need more signals
-DMComp : data_memory port map(clk => clk, writeData => RF_b, readAddress => ALU_result, writeAddress => ALU_result, result => DM_result);
+DMComp : data_memory port map(clk => clk, writeData => RF_b, ReadBit => '0', WriteBit => '0', readAddress => ALU_result, writeAddress => ALU_result, result => DM_output);
 
 ---- Wiring for instruction_mem 
 -- PC_value is probably wrong
-IMComp : instruction_mem port map(PC_value => PC(5 downto 0), instruc => instruction_);
+IMComp : instruction_mem port map(PC_value => PC(5 downto 0), instruc => instr);
 
 ---- Wiring for bsrc
-BSRCComp : bsrc port map(instr_type => instruction_(63 downto 62), regB => RF_b, immB => instruction_(31 downto 0), toB => RF_b);
+BSRCComp : bsrc port map(instr_type => instr(63 downto 62), regB => RF_b, immB => instr(31 downto 0), toB => RF_b);
 
 end;
 
