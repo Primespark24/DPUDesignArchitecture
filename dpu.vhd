@@ -28,18 +28,17 @@ end component;
 
 ------------------------------------------------------------------------------------------------------------
 --Regfile handles the requisiton of register values
--- Input: clk (Holds data in registers)
--- Input: writeIn (Control bit that determines if we are writing to register files)
--- Inputs: regAIn1, regAIn2 (Adresses of registers we are reading from)
--- Outputs: regOut1, regOut2 (Contents of registers we read from)
--- Input: writeDest (Adresses of registers we are writing to)  --writerdest comes from instr handled by control unit
--- Input: destContents (Data that is being written to adress held at writeDest)
-component regfile generic(width: integer);
-port(clk, writeIn: in std_logic; 
-     regAIn1, regAIn2, : in std_logic(integer(ceil(log2(real(width))))-1) downto 0));
-     writeDest : in std_logic(integer(ceil(log2(real(width))))-1) downto 0));
-     destContents: in  std_logic_vector(width-1 downto 0);
-     regOut1, regOut2: out std_logic_vector(width-1 downto 0)); 
+-- Input: clk (Used to update/run processes)
+-- Input: instr_type (Used to help specify register bits)
+-- Input: instruction (Complete instruction signal)
+-- Input: DM_result (Output signal from data memory. Used for store word instruction and R-types)
+-- Outputs: OutA, OutB (Output signals sent to ALU)
+component regfile
+  port(clk: in  STD_LOGIC;
+       instr_type: in  STD_LOGIC_VECTOR(1 downto 0);
+       instruction: in  STD_LOGIC_Vector(63 downto 0);
+       DM_result: in  STD_LOGIC_Vector(31 downto 0);
+       OutA, OutB: out STD_LOGIC_VECTOR(31 downto 0));
 end component;
 
 ------------------------------------------------------------------------------------------------------------
