@@ -265,6 +265,47 @@ Questions to Guide the Discussion. Take Notes.
 ### Summary of Observations
 In this section, include your summary of the groups observations.
 
+Purpose: In the making of fp_2, we expected the project to be intense because creating a datapath unit from scratch would be difficult.
+We also weren't sure about the level of difficulty associated with floating point operations/numbers. We also knew that we would need to work consistently over the
+week instead of doing it all at the last second.
+
+Results: We had some issues getting the floating point library to compile with the project, but once that was done floating point operations worked well 
+in both the ALU and the simulation for the ALU. The DPU was difficult as we expected. We finished the project reasonably, and ended up meeting multiple times to work on it.
+
+Causes: Since we had a lack of knowledge about floating point operations/other various topics prior to starting the project, we didn't have many expectations. It's hard to say that anything specific
+caused a difference in terms of our expectations vs reality. We would say that the learning process was the source of the difference between our expectations and what happened
+(we needed to go through the learning process before we could have expectations).
+
+Implications: We learned that you can use the syntax "work" to compile other vhdl libraries into our project. This will be very helpful moving forward for fp3 and fp4. We also learned a lot more about designing an ALU and DPU, and since 
+we got hands-on experience with designing these components, our overall knowledge of both VHDL and general hardware design are improved. Also, knowing how our components work will be useful for the next projects.
+
+1. Did the group acheive its goals?
+Yes, we reasonably met our expectations for ourselves and the project.
+We are happy that we sucessfully got the floating point library to compile as well as simulating it correctly.
+Also, we are happy with our DPU design, and are excitied to see it working once we finish the control unit in the next project.
+
+2. What factors allowed for this?
+Nik's research on the IEEE floating point standard helped us a lot with identifying both the formats we wanted our data to be in as well as a compatible library we could use to convert our data to floats.
+Our flexibile schedules allowed us to meet frequently. 
+All of the group members put in a good effort on different components so that the work was spread evenly, which made our project a low stress environment.
+
+3. What did not cause this?
+Nothing. We were successful.
+
+4. What were the barriers present?
+Gettting floating point libraries to compile with the project.
+Designing the DPU, ALU
+Connecting all the components via the DPU
+
+5. How can the group mitigate these barriers in the future.
+Now that we know how to properly compile a library with our project, we will not run into compilation related issues again.
+Having a better understanding of our ALU/DPU will make it easier for us to refer back to old code if we ever need to work on a new/updated version of one.
+Connecting all of the components was a bit difficult, as it required a good understanding of how all of the components worked. Learning how all of the components work
+increases our understanding of the system as a whole and will make it easier to make new components in the future.
+
+
+
+
 *******************************************************************************
 ### Grading Criteria
 *******************************************************************************
