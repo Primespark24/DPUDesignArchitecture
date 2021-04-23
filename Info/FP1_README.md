@@ -252,32 +252,33 @@ Machine Code Instruction Format: 64 bits:
 
 x means that the value depends on the runtime
 
-0: F/I-Type: |2 Bit instruction type| 5 bits op | 6 DestReg | 6 RegSrc |13 extra | 32 Immediate/Float|
+0: F/I-Type: |2 Bit instruction type| 5 bits op | 13 Extra | 6 RS |6 RD | 32 Immediate/Float|
 
-| Instruction| Instruction_Type | Opcode | RD | RS  |13 extra | Immediate|
+| Instruction| Instruction_Type | Opcode | Extra | RS  | RD | Immediate|
 |:----:| :----:|:----:|:----:|:----:|:----:|:----:|
-| Addfi      |    00            | 00000  |  x (6bit)  | | '0' x13  |   x      |
-                                            --where write to, a, b (for alu)
-1: R-Type:   |2 Bit instruction type| 5 bits op| 6 RD| 6 RS | 6 Rinput  | extra 39  |
+| Addfi      |    00            | 00000  |  13   |  x  | x  |   x      |
 
-| Instruction| Instruction_Type | Opcode | RD | RS | RI | Extra |
+1: R-Type:   |2 Bit instruction type| 5 bits op| 39 bit extra| 6 RT | 6 RD | 6 RS |
+
+| Instruction| Instruction_Type | Opcode | Extra | RT | RD | RS |
 |:---:| :---:|:---:|:---:|:---:|:---:|:---:|
-| Sub        |    01            | 00010  | x  | x  | x  |  39   |
-| Add        |    01            | 00001  | x  | x  | x  |  39   |
-| Mul        |    01            | 00011  | x  | x  | x  |  39   |
-| Div        |    01            | 00100  | x  | x  | x  |  39   |
-| Mod        |    01            | 00101  | x  | x  | x  |  39   | 
-| And        |    01            | 00110  | x  | x  | x  |  39   |
-| Or         |    01            | 00111  | x  | x  | x  |  39   |
---we never go into registers here
-2: J-Type:   |2 Bit instruction type| 5 bits op| 6 RD | 32 Immediate/Float | Offset from start of main 19 bits|
+| Sub        |    01            | 00010  |  39   | x  | x  | x  |
+| Add        |    01            | 00001  |  39   | x  | x  | x  |
+| Mul        |    01            | 00011  |  39   | x  | x  | x  |
+| Div        |    01            | 00100  |  39   | x  | x  | x  |
+| Mod        |    01            | 00101  |  39   | x  | x  | x  |
+| And        |    01            | 00110  |  39   | x  | x  | x  |
+| Or         |    01            | 00111  |  39   | x  | x  | x  |
+
+2: J-Type:   |2 Bit instruction type| 5 bits op| 6 RD | 32 Immediate/Float |Offset from current line 19 bits|
 | Instruction| Instruction_Type | Opcode | RD    | Immediate | Jump Offset |
 |:---:| :---:|:---:|:---:|:---:     |:---:   |
 | beq        |   10              |  01010 |  x    |   x       |  calculate  |
 | bne        |   10              |  01011 |  x    |   x       |  calculate  |
 | jump        |   10             |  01100 |  x    |   x       |  calculate  |
---TODO where does the dpu handle this instr
+
 3:  M-Type:   |2 Bit instruction type| 5 bits op| 45 bits Extra | 6 RD | 6 mem_loc |
+
 | Instruction | Instruction Type| Opcode | Extra | RD | Memory Location |
 | :---: | :---: | :---: | :---: | :---:| :---: |
 | lw         |    11                | 01000    |  45           | x    | x  |  x |
